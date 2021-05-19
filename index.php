@@ -8,10 +8,16 @@ else {
 	$arrs = array();
 
 	for($i = 0; $i < 32; $i += 1) {
-		$arrs[] = strval($i);
+		$arrs[] = strval($i + 1);
 	}
 
-	$json = array("data" => $arrs);
+	$temp = shuffle($arrs);
+
+	for($i = 0; $i < 31; i += 2) {
+		
+	}
+
+	$json = array("data" => $arrs, "set1" => $set1);
 
 
 
@@ -50,32 +56,51 @@ else {
 		  </form>
 		</nav>
 		<div class="row">
-			<div class="col-12-lg">
+			<div class="col-lg-12">
 				<div class="card bg-light shadow p-3">
-					<h5 class="card-header">
+					<h5 class="card-header text-center">
 						Player Chart
 					</h5>
 					<div class="card-body">
+						<table class="table">
+						<thead>
+						   <tr>
+						    <th scope="col">Player #</th>
+						    <th scope="col">Name</th>
+						   </tr>
+						 </thead>
+						 <tbody>
 
 <?php
 
 $player_data = fopen('data/players.json', 'r');
 
-$data_string = json_decode(fread($player_data, filesize("data/players.json")));
-
-echo $data_string;
+$data_string = json_decode(fread($player_data, filesize("data/players.json")), True);
 
 
 foreach($data_string["data"] as $player){
-	echo $player;
+?>	
+						<tr>
+							<th> <?php echo $player ?> </th>
+							<th> <?php echo $player ?> </th>
+						</tr>
+<?php
 }
 
 ?>
+						</tbody>
+						</table>
 
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-lg-12">
 
+
+			</div>
+		</div>
+ 
 	</body>
 </html>
