@@ -3,8 +3,16 @@
 // the following is sample data generation code
 // will not be used in the real event, just used to test the display and edit features
 
-// include 'data/randnamegen.php';
+//  $myfile = fopen("data/winners.json", "w");
 
+// $arr = array("round1" => array_fill(0, 16, null),
+// 	"round2" => array_fill(0, 8, null),
+//  	"round3" => array_fill(0, 4, null),
+//  	"round4" => array_fill(0, 2, null),
+//  	"round5" => array_fill(0, 1, null));
+
+//  fwrite($myfile, json_encode($arr));
+//  fclose($myfile);
 // $myfile = fopen("data/games.json", "w");
 // $names = fopen("data/names.json", "w");
 
@@ -39,6 +47,9 @@
 // 	fwrite($myfile, json_encode($json));
 // 	fclose($myfile);
 // }
+
+
+
 ?>
 
 
@@ -122,6 +133,8 @@ for($i = 0; $i < count($pdata_string); $i++){
 						    <th scope="col">Game #</th>
 						    <th scope="col">Player 1</th>
 						    <th scope="col">Player 2</th>
+						    <th scope="col">Status</th>
+						    <th scope="col">Time</th>
 						   </tr>
 						 </thead>
 						 <tbody>
@@ -130,7 +143,7 @@ for($i = 0; $i < count($pdata_string); $i++){
 $data = fopen('data/games.json', 'r');
 
 $data_string = json_decode(fread($data, filesize("data/games.json")), true);
-
+$winners = json_decode(fread(fopen('data/winners.json', 'r'), filesize('data/winners.json')), true);
 
 
 for($i = 0; $i < count($data_string["first-games"]); $i++){
@@ -139,13 +152,47 @@ for($i = 0; $i < count($data_string["first-games"]); $i++){
 						<tr>
 							<th> <?php echo "1" ?> </th>
 							<th> <?php echo strval($i + 1) ?> </th>
+
+<?php
+	if($winners["round1"][$i] == null) {
+?>
+
 							<th> <?php echo $data_string["first-games"][$i][0] ?> - <?php echo $pdata_string[intval($data_string["first-games"][$i][0])] ?> </th>
 							<th> <?php echo $data_string["first-games"][$i][1] ?> - <?php echo $pdata_string[intval($data_string["first-games"][$i][1])] ?></th>
+							<th> Unfinished </th>
+						
+<?php
+	}
+	else {
+		$color1 = "";
+		$color2 = "";
+		if($winners["round1"][$i] == $data_string["first-games"][$i][0]) {
+			$color1 = "green";
+			$color2 = "red";
+		}
+		elseif($winners["round1"][$i] == $data_string["first-games"][$i][1]) {
+			$color1 = "red";
+			$color2 = "green";
+		}
+
+?>
+
+						<th style="color: <?php echo $color1 ?>"> <?php echo $data_string["first-games"][$i][0] ?> - <?php echo $pdata_string[intval($data_string["first-games"][$i][0])] ?> </th>
+						<th style="color: <?php echo $color2 ?>"> <?php echo $data_string["first-games"][$i][1] ?> - <?php echo $pdata_string[intval($data_string["first-games"][$i][1])] ?></th>
+						<th> Finished </th>
+						
+<?php
+	}
+
+?>
+						<th> 10:00 </th>
 						</tr>
 <?php
+
 }
 
 ?>
+
 			</tbody>
 			</table>
 			</div>
