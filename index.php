@@ -73,7 +73,7 @@
 		<nav class="navbar navbar-light bg-light justify-content-between">
 		  <a class="navbar-brand">Chess Tournament</a>
 		  <form class="form-inline">
-		    <a class="nav-link">Admin Login</a>
+		    <a href="./admin.php" class="nav-link">Admin Login</a>
 		  </form>
 		</nav>
 		<div class="row" style="padding: 10px">
@@ -198,6 +198,52 @@ for($i = 0; $i < count($data_string["first-games"]); $i++){
 			</div>
 			</div>
 		</div>
+		</div>
+		</div>
+
+		<div class="row" style="padding: 10px">
+			<div class="col-lg-12">
+				<div class="card bg-light shadow p-3">
+					<h5 class="card-header text-center">
+					<button type="button" class="btn" data-toggle="collapse" data-target="#lchart" aria-expanded="false" aria-controls="gchart"> LiChess Links </button>
+					</h5>
+					<div class="collapse" id="lchart">
+					<div class="card-body">
+						<table class="table">
+						<thead>
+							<tr>
+							<th scope="col">Round #</th>
+							<th scope="col">Game #</th>
+							<th scope="col">LiChess Link</th>
+							</tr>
+						</thead>
+						<tbody>
+
+<?php
+$data = fopen('data/links.json', 'r');
+
+$data_string = json_decode(fread($data, filesize("data/links.json")), true)["links"];
+
+for($i = 0; $i < count($data_string); $i++) {
+
+?>		
+						<tr>
+						<th><?php echo $data_string[$i][0] ?></th>
+						<th><?php echo $data_string[$i][1] ?></th>
+						<th><a target="_blank" href="<?php echo $data_string[$i][2] ?>">Link</a></th>
+						</tr>
+<?php
+
+}
+
+?>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
  
 	</body>
 </html>
