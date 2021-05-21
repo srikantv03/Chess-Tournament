@@ -5,10 +5,21 @@ $round = $_POST["winner-round"];
 $game = $_POST["game-index"];
 $chosen_winner = $_POST["chosen-winner"];
 
-if($round != "" && $round != null && $game != "" && $game != null && $chosen_winner != "" && $chosen_winner != null) {
+$round_link = $_POST["round-link"];
+$game_link = $_POST["game-link"];
+$full_link = $_POST["full-link"];
 
+
+
+
+if($round != "" && $round != null && $game != "" && $game != null && $chosen_winner != "" && $chosen_winner != null) {
 	setWinner($round, intval($game), $chosen_winner);
 }
+
+if($round_link != "" && $round_link != null && $game_link != "" && $game_link != null && $full_link != "" && $full_link != null) {
+	setLinks($round_link, $game_link, $full_link);
+}
+
 
 
 
@@ -24,6 +35,27 @@ function setWinner($round, $index, $winner) {
 
 	fwrite($data, json_encode($json_arr));
 	fclose($data);
+}
+
+function setLinks($round, $game, $link) {
+	$data_read = fopen('data/links.json', 'r');
+	$json_arr = json_decode(fread($data_read, filesize('data/links.json')), true);
+	$edited = false;
+	for($i = 0; $i < count($json_arr["links"]); $i++) {
+		if($json_arr["links"][$i][0] == strval($round) && $json_arr["links"][$i][1] == strval($game)) {
+			$json_arr["links"][$i][2] = $link;
+			$edited = true;
+		}
+	}
+	if(!$edited) {
+		$json_arr["links"][] = array($round, $game, $link);
+	}
+
+	$data = fopen('data/links.json', 'w');
+
+	fwrite($data, json_encode($json_arr));
+	fclose($data);
+
 }
 
 
@@ -57,16 +89,22 @@ else if($_SESSION['admin'] == true) {
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	</head>
 	<body>
-		<form method="post" action="admin.php"> 
-			<select class="form-select" name="winner-round" aria-label="Default select example">
-			  <option selected>Open this select menu</option>
+		<div class="row m-0">
+		<div class="col-lg-12 p-3">
+		<div class="card shadow p-3">
+		<h5 class="card-header">Claim Winner</h5>
+		<div class="card-body">
+		<form class="text-center" method="post" action="admin.php"> 
+			<label> Game </label>
+			<select class="form-control" name="winner-round" aria-label="Default select example">
+			  <option selected>Choose Game</option>
 			  <option value="round1">One</option>
 			  <option value="round2">Two</option>
 			  <option value="round3">Three</option>
 			  <option value="round4">Two</option>
 			  <option value="round5">Three</option>
 			</select>
-			<input type="submit">
+			<input class="form-control" type="submit">
 		</form>
 
 <?php
@@ -77,7 +115,7 @@ else if($_SESSION['admin'] == true) {
 
 			<form method="post" action="admin.php"> 
 			<input type="hidden" value="<?php echo $round?>" name="winner-round">
-			<select class="form-select" name="game-index" aria-label="Default select example">
+			<select class="form-control" name="game-index" aria-label="Default select example">
 
 <?php
 			$data = fopen('data/winners.json', 'r');
@@ -92,7 +130,7 @@ else if($_SESSION['admin'] == true) {
 			}
 ?>
 			</select>
-			<input type="submit">
+			<input class="form-control" type="submit">
 
 			</form>
 <?php
@@ -101,10 +139,11 @@ else if($_SESSION['admin'] == true) {
 		if($round != null && $round != "" && $game != null && $game != "") {
 ?>
 			<form method="post" action="admin.php">
+
 			<input type="hidden" value="<?php echo $round?>" name="winner-round">
 			<input type="hidden" value="<?php echo $game?>" name="game-index">
-
-			<select class="form-select" name="chosen-winner" aria-label="Default select example">
+			<label> Winner </label>
+			<select class="form-control" name="chosen-winner" aria-label="Default select example">
 
 <?php
 			$data = fopen('data/games.json', 'r');
@@ -118,7 +157,7 @@ else if($_SESSION['admin'] == true) {
 
 
 			</select>
-			<input type="submit">
+			<input class="form-control" type="submit">
 			</form>
 
 <?php
@@ -126,7 +165,28 @@ else if($_SESSION['admin'] == true) {
 		}
 }
 ?>
+	</div>
+	</div>
+	</div>
+	</div>
 
+	<div class="row m-0">
+		<div class="col-lg-12">
+		<div class="card p-3 shadow">
+		 <h5 class="card-header text-center">Add Links</h5>
+		 <form method="post" action="admin.php">
+		 <input type="text" name="round-link" class="form-control" placeholder="Round">
+		 <input type="text" name="game-link" class="form-control" placeholder="Game">
+		 <input type="text" name="full-link" class="form-control" placeholder="Full Link">
+		 <input type="submit" class="form-control">
+		 </form>
+
+		</div>
+		</div>
+		</div>
+
+
+	</div>
 
 	</body>
 </html>

@@ -76,7 +76,7 @@
 		    <a href="./admin.php" class="nav-link">Admin Login</a>
 		  </form>
 		</nav>
-		<div class="row" style="padding: 10px">
+		<div class="row m-0" style="padding: 10px">
 			<div class="col-lg-12">
 				<div class="card bg-light shadow p-3">
 					<h5 class="card-header text-center"> 
@@ -118,7 +118,7 @@ for($i = 0; $i < count($pdata_string); $i++){
 				</div>
 			</div>
 		</div>
-		<div class="row" style="padding: 10px">
+		<div class="row m-0" style="padding: 10px">
 			<div class="col-lg-12">
 				<div class="card bg-light shadow p-3">
 					<h5 class="card-header text-center">
@@ -201,7 +201,7 @@ for($i = 0; $i < count($data_string["first-games"]); $i++){
 		</div>
 		</div>
 
-		<div class="row" style="padding: 10px">
+		<div class="row m-0" style="padding: 10px">
 			<div class="col-lg-12">
 				<div class="card bg-light shadow p-3">
 					<h5 class="card-header text-center">
